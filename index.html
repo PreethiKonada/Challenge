@@ -17,6 +17,9 @@
   .mood-btn.active{transform:translateY(-3px);box-shadow:0 6px 12px rgba(0,0,0,0.12)}
   .dropdown-activities{margin-top:10px}
   .dropdown-activities select{padding:6px;border-radius:6px;border:1px solid rgba(0,0,0,0.15);width:100%}
+  .search-bar{margin-top:10px;display:flex;gap:6px}
+  .search-bar input{flex:1;padding:6px;border:1px solid #ccc;border-radius:6px}
+  .search-bar button{padding:6px 10px;border:none;border-radius:6px;background:#0077ff;color:#fff;cursor:pointer}
   .music-list{margin-top:10px}
   .track{display:flex;gap:8px;align-items:center;padding:6px;border-radius:6px;cursor:pointer}
   .track:hover{background:#f6f6f6}
@@ -57,6 +60,10 @@
     <div class="dropdown-activities">
       <label for="activities">Activities for your mood:</label>
       <select id="activities"></select>
+    </div>
+    <div class="search-bar">
+      <input id="spotifyQuery" type="text" placeholder="Search song on Spotify..." />
+      <button onclick="searchSpotify()">🔍</button>
     </div>
     <h4 style="margin-top:10px">Playlist</h4>
     <div class="music-list" id="musicList"></div>
@@ -110,12 +117,9 @@ const player=document.getElementById('player');
 function setMood(mood){
  state.mood=mood;document.querySelectorAll('.mood-btn').forEach(b=>b.classList.toggle('active',b.dataset.mood===mood));
  const m=moods[mood];document.body.style.background=`linear-gradient(135deg,${m.bg[0]},${m.bg[1]})`;
- // playlist
  state.playlist=m.tracks;state.current=0;renderPlaylist();loadTrack(0);
- // tips
  document.getElementById('quickTips').innerHTML=m.tips.map(t=>`<li>${t}</li>`).join('');
  document.getElementById('tipsList').innerHTML=m.tips.map(t=>`<li>${t}</li>`).join('');
- // activities
  const act=document.getElementById('activities');act.innerHTML=m.activities.map(a=>`<option>${a}</option>`).join('');
 }
 function renderPlaylist(){const ml=document.getElementById('musicList');ml.innerHTML='';state.playlist.forEach((t,i)=>{ml.innerHTML+=`<div class='track ${i===state.current?'active':''}' onclick='selectTrack(${i})'><img class='cover' src='${t.cover}'/><div>${t.title}</div></div>`});}
@@ -125,6 +129,8 @@ function setVolume(v){player.volume=v;}function nextTrack(){state.current=(state
 function prevTrack(){state.current=(state.current-1+state.playlist.length)%state.playlist.length;loadTrack(state.current);player.play();}
 function selectTrack(i){state.current=i;loadTrack(i);player.play();}
 function updateActiveUI(){[...document.getElementById('musicList').children].forEach((el,idx)=>el.classList.toggle('active',idx===state.current));}
+// Spotify search
+function searchSpotify(){const q=document.getElementById('spotifyQuery').value;if(!q)return;window.open(`https://open.spotify.com/search/${encodeURIComponent(q)}`,'_blank');}
 // TicTacToe
 let tttBoard=[],tttTurn='X';function initTicTac(){const t=document.getElementById('ttt');t.innerHTML='';tttBoard=Array(9).fill('');tttTurn='X';for(let i=0;i<9;i++){const c=document.createElement('div');c.className='cell';c.onclick=()=>playTTT(i);t.appendChild(c);}document.getElementById('tttStatus').textContent='Turn: X';}
 function playTTT(i){if(tttBoard[i])return;tttBoard[i]=tttTurn;renderTTT();if(checkWin(tttTurn)){document.getElementById('tttStatus').textContent=tttTurn+' wins!';return;}if(tttBoard.every(Boolean)){document.getElementById('tttStatus').textContent='Draw';return;}tttTurn=tttTurn==='X'?'O':'X';document.getElementById('tttStatus').textContent='Turn: '+tttTurn;}
