@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Mood Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg1:#f3f4f6;
+      --bg2:#ffffff;
+      --accent:#6366f1;
+    }
+    body{
+      margin:0;
+      font-family:Inter,system-ui;
+      background:linear-gradient(180deg,var(--bg1),var(--bg2));
+      transition:background 0.6s ease;
+    }
+    header{
+      display:flex;align-items:center;justify-content:space-between;padding:14px 22px;
+      background:rgba(255,255,255,0.7);backdrop-filter:blur(6px);position:sticky;top:0;z-index:20;
+    }
+    .logo{font-weight:800;font-size:22px;color:var(--accent)}
+    nav{display:flex;gap:14px}
+    .dropdown{position:relative}
+    .dropbtn{border:none;background:transparent;font-weight:600;cursor:pointer;padding:8px}
+    .dropdown-content{position:absolute;top:40px;left:0;background:#fff;box-shadow:0 8px 24px rgba(0,0,0,0.1);border-radius:8px;display:none;min-width:150px}
+    .dropdown-content a{display:block;padding:8px 10px;text-decoration:none;color:#111}
+    .dropdown-content a:hover{background:#f3f4f6}
+    .dropdown:hover .dropdown-content{display:block}
+
+    main{max-width:1200px;margin:20px auto;padding:0 18px;display:grid;grid-template-columns:300px 1fr;gap:18px}
+    .panel{background:#fff;border-radius:12px;box-shadow:0 6px 18px rgba(0,0,0,0.08);padding:16px}
+    .moods{display:flex;gap:10px;margin-top:10px}
+    .mood-btn{font-size:24px;padding:10px;border:none;border-radius:10px;cursor:pointer;flex:1;background:#f9fafb}
+    .mood-btn.active{background:var(--accent);color:#fff}
+    .ai-btn{margin-top:12px;padding:10px;width:100%;border:none;border-radius:10px;background:linear-gradient(90deg,#34d399,#3b82f6);color:#fff;font-weight:600;cursor:pointer}
+
+    .card{background:#fff;border-radius:12px;box-shadow:0 6px 18px rgba(0,0,0,0.08);padding:16px;margin-bottom:18px}
+    .hero{padding:20px;border-radius:12px;margin-bottom:18px;color:#111;transition:background 0.6s ease}
+    .hero h1{margin:0;font-size:20px}
+    .hero p{margin-top:6px;color:#555}
+
+    .quotes{font-style:italic;margin-top:12px;color:#333}
+    .music a{display:inline-block;margin-top:8px;padding:6px 10px;border-radius:8px;text-decoration:none;background:#fef3c7;color:#92400e;font-weight:600}
+
+    .activities ul{padding-left:20px;margin:0}
+    .activities li{margin-bottom:6px}
+    .activities a{color:var(--accent);text-decoration:none}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">Mood Dashboard</div>
+    <nav>
+      <div class="dropdown">
+        <button class="dropbtn">Home ▾</button>
+        <div class="dropdown-content">
+          <a href="#dashboard">Dashboard</a>
+          <a href="#moods">Moods</a>
+        </div>
+      </div>
+      <div class="dropdown">
+        <button class="dropbtn">Activities ▾</button>
+        <div class="dropdown-content">
+          <a href="#games">Games</a>
+          <a href="#music">Music</a>
+        </div>
+      </div>
+      <div class="dropdown">
+        <button class="dropbtn">Profile ▾</button>
+        <div class="dropdown-content">
+          <a href="#settings">Settings</a>
+          <a href="#logout">Logout</a>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <aside class="panel">
+      <h3>Select Mood</h3>
+      <div class="moods">
+        <button class="mood-btn" data-mood="happy">😄</button>
+        <button class="mood-btn" data-mood="neutral">😐</button>
+        <button class="mood-btn" data-mood="sad">😢</button>
+        <button class="mood-btn" data-mood="angry">😡</button>
+      </div>
+      <button class="ai-btn" id="aiDetect">AI Detect Mood</button>
+
+      <div style="margin-top:14px">
+        <h4>Motivational Quote</h4>
+        <div class="quotes" id="quote">Choose a mood to see a motivational quote.</div>
+        <div class="music" id="music">Music: <a id="musicLink" href="#" target="_blank">—</a></div>
+      </div>
+    </aside>
+
+    <section>
+      <div class="hero" id="hero">
+        <div>
+          <h1 id="hero-title">Welcome — select your mood</h1>
+          <p id="hero-sub">Your dashboard adapts to how you feel. Try mood-based activities to boost your day.</p>
+        </div>
+      </div>
+
+      <div class="card activities">
+        <h3>Activities to Improve Mood</h3>
+        <ul>
+          <li>🎮 <a href="https://www.sudoku.com/" target="_blank">Play a quick game (Sudoku)</a></li>
+          <li>🎵 <a href="https://open.spotify.com" target="_blank">Listen to relaxing music</a></li>
+          <li>🧘 <a href="https://www.youtube.com/results?search_query=guided+meditation" target="_blank">Try a guided meditation</a></li>
+          <li>✍️ <a href="https://evernote.com/" target="_blank">Write down your thoughts (journaling)</a></li>
+        </ul>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const moods = {
+      happy:{bg:['#fef9c3','#fef08a'],title:'Feeling Happy!',quote:'"Happiness is contagious, spread it around."',music:'Upbeat Playlist'},
+      neutral:{bg:['#f3f4f6','#e5e7eb'],title:'Neutral Mood',quote:'"Keep moving forward, one step at a time."',music:'Chill Beats'},
+      sad:{bg:['#dbeafe','#bfdbfe'],title:'Feeling Sad',quote:'"Every storm runs out of rain."',music:'Soothing Acoustic'},
+      angry:{bg:['#fee2e2','#fecaca'],title:'Feeling Angry',quote:'"Breathe in calm, breathe out anger."',music:'Calm Instrumentals'}
+    };
+
+    function setMood(mood){
+      document.querySelectorAll('.mood-btn').forEach(b=>b.classList.toggle('active', b.dataset.mood===mood));
+      const m = moods[mood];
+      document.body.style.background = `linear-gradient(180deg, ${m.bg[0]}, ${m.bg[1]})`;
+      const hero = document.getElementById('hero');
+      hero.style.background = `linear-gradient(120deg, ${m.bg[0]}, ${m.bg[1]})`;
+      document.getElementById('hero-title').textContent = m.title;
+      document.getElementById('quote').textContent = m.quote;
+      const ml = document.getElementById('musicLink');
+      ml.textContent = m.music; ml.href = 'https://www.youtube.com/results?search_query=' + encodeURIComponent(m.music);
+    }
+
+    document.querySelectorAll('.mood-btn').forEach(b=>b.addEventListener('click', ()=> setMood(b.dataset.mood)));
+
+    document.getElementById('aiDetect').addEventListener('click', ()=>{
+      const btn = document.getElementById('aiDetect');
+      btn.textContent = 'Detecting...';
+      setTimeout(()=>{
+        const moodsArr = Object.keys(moods);
+        const picked = moodsArr[Math.floor(Math.random()*moodsArr.length)];
+        setMood(picked);
+        btn.textContent = 'AI Detect Mood';
+      },1000);
+    });
+  </script>
+</body>
+</html>
