@@ -1,47 +1,48 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>MoodPlay — Mood Dashboard</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MoodPlay — Pick Your Mood</title>
 <style>
-  *{box-sizing:border-box;margin:0;padding:0}
-  body{font-family:Inter,system-ui,Arial;min-height:100vh;display:flex;flex-direction:column}
-  header{display:flex;align-items:center;justify-content:space-between;padding:12px 18px;background:rgba(255,255,255,0.8);backdrop-filter:blur(6px)}
-  .logo{font-weight:800;font-size:20px}
-  nav select{padding:6px;border-radius:8px;border:1px solid rgba(11,19,32,0.12)}
-  main{flex:1;display:grid;grid-template-columns:280px 1fr;gap:12px;padding:12px}
-  .panel{background:#fff;border-radius:12px;padding:12px;box-shadow:0 6px 20px rgba(0,0,0,0.06)}
-  .moods{display:flex;gap:6px;flex-wrap:wrap}
-  .mood-btn{font-size:22px;padding:8px;border-radius:8px;background:#f1f1f1;border:0;cursor:pointer}
-  .mood-btn.active{transform:translateY(-3px);box-shadow:0 6px 12px rgba(0,0,0,0.12)}
-  .dropdown-activities{margin-top:10px}
-  .dropdown-activities select{padding:6px;border-radius:6px;border:1px solid rgba(0,0,0,0.15);width:100%}
-  .search-bar{margin-top:10px;display:flex;gap:6px}
-  .search-bar input{flex:1;padding:6px;border:1px solid #ccc;border-radius:6px}
-  .search-bar button{padding:6px 10px;border:none;border-radius:6px;background:#0077ff;color:#fff;cursor:pointer}
-  .music-list{margin-top:10px}
-  .track{display:flex;gap:8px;align-items:center;padding:6px;border-radius:6px;cursor:pointer}
-  .track:hover{background:#f6f6f6}
-  .track.active{background:linear-gradient(90deg,#eef6ff,#fff)}
-  .cover{width:36px;height:36px;border-radius:6px;object-fit:cover}
-  .games,.tips{margin-top:10px}
-  .ttt-grid{display:grid;grid-template-columns:repeat(3,70px);gap:6px}
-  .cell{width:70px;height:70px;background:#fff;border:1px solid #ddd;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:24px;cursor:pointer}
-  .mem-grid{display:grid;grid-template-columns:repeat(4,60px);gap:6px;margin-top:6px}
-  .card-mem{width:60px;height:60px;border-radius:6px;background:#fff;display:flex;align-items:center;justify-content:center;font-size:20px;cursor:pointer;border:1px solid #ddd}
-  footer{text-align:center;padding:10px;font-size:13px;color:#666;background:#fafafa}
-  .loader{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);width:40px;height:40px;border-radius:50%;border:4px solid rgba(0,0,0,0.06);border-top-color:#0077ff;animation:spin 1s linear infinite;display:none;z-index:60}
-  @keyframes spin{to{transform:translate(-50%,-50%) rotate(360deg)}}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Arial,sans-serif;height:100vh;width:100vw;display:flex;flex-direction:column;color:#fff;background:#111;overflow-x:hidden;transition:background 1s;}
+header{display:flex;align-items:center;justify-content:space-between;padding:20px 30px;background:rgba(0,0,0,0.5);color:#fff;font-size:32px;font-weight:bold;backdrop-filter:blur(6px);}
+nav select{padding:14px;border-radius:12px;border:none;font-size:22px;background:#222;color:#fff;}
+main{flex:1;display:flex;gap:20px;padding:20px;width:100%;flex-wrap:wrap;}
+.panel{background:rgba(0,0,0,0.5);border-radius:20px;padding:30px;box-shadow:0 10px 30px rgba(0,0,0,0.5);flex:1;min-width:400px;transition:transform 0.3s;display:flex;flex-direction:column;align-items:center;}
+.panel:hover{transform:translateY(-5px);}
+.moods{display:flex;gap:30px;flex-wrap:wrap;justify-content:center;margin-bottom:30px;}
+.mood-btn{font-size:70px;padding:25px;border-radius:25px;background:rgba(255,255,255,0.1);border:0;cursor:pointer;transition:all 0.3s;color:#fff;}
+.mood-btn.active{transform:translateY(-5px);box-shadow:0 12px 25px rgba(0,0,0,0.7);}
+.dropdown-activities select{padding:20px;border-radius:18px;border:none;width:100%;font-size:24px;margin-top:15px;background:rgba(255,255,255,0.1);color:#fff;display:none;}
+.search-bar{margin-top:15px;display:flex;gap:12px;}
+.search-bar input{flex:1;padding:18px;border:none;border-radius:18px;font-size:22px;background:rgba(255,255,255,0.1);color:#fff;transition:0.3s;}
+.search-bar input::placeholder{color:#ccc;}
+.search-bar button{padding:18px 26px;border:none;border-radius:18px;font-weight:bold;font-size:22px;cursor:pointer;transition:0.3s;}
+h2{font-size:32px;margin-bottom:15px;text-align:center;}
+ul{list-style:none;padding-left:0;}
+ul li{margin:12px 0;font-size:24px;text-align:center;}
+.yoga-list li{font-size:28px;margin:16px 0;}
+.tips-large{font-size:30px;font-weight:bold;text-align:center;margin-top:25px;}
+.games-section{margin-top:30px;display:none;}
+.ttt-grid{display:grid;grid-template-columns:repeat(3,100px);gap:15px;justify-content:center;margin-top:15px;}
+.cell{width:100px;height:100px;background:rgba(255,255,255,0.2);border-radius:15px;display:flex;align-items:center;justify-content:center;font-size:50px;cursor:pointer;transition:0.2s;color:#fff;}
+.cell:hover{background:rgba(255,255,255,0.35);}
+.mem-grid{display:grid;grid-template-columns:repeat(4,90px);gap:15px;justify-content:center;margin-top:15px;}
+.card-mem{width:90px;height:90px;border-radius:15px;background:rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center;font-size:48px;cursor:pointer;transition:0.2s;color:#fff;}
+.card-mem:hover{background:rgba(255,255,255,0.35);}
+.win-title{font-size:36px;color:gold;text-align:center;margin:15px 0;display:none;}
+button.dynamic-btn{padding:12px 20px;border-radius:15px;font-weight:bold;font-size:22px;cursor:pointer;transition:0.3s;margin-top:15px;color:#000;}
+footer{text-align:center;padding:20px;font-size:22px;color:#fff;background:rgba(0,0,0,0.5);}
 </style>
 </head>
 <body>
 <header>
-  <div class="logo">MoodPlay • Feel Better</div>
+  MoodPlay • Pick Your Mood
   <nav>
     <select onchange="navigate(this.value)">
       <option value="home">Home</option>
-      <option value="music">Music</option>
       <option value="games">Games</option>
       <option value="tips">Tips</option>
     </select>
@@ -49,100 +50,148 @@
 </header>
 
 <main>
-  <aside class="panel">
-    <h3>Pick a mood</h3>
-    <div class="moods">
-      <button class="mood-btn" data-mood="happy">😄</button>
-      <button class="mood-btn" data-mood="neutral">😐</button>
-      <button class="mood-btn" data-mood="sad">😢</button>
-      <button class="mood-btn" data-mood="angry">😡</button>
-    </div>
-    <div class="dropdown-activities">
-      <label for="activities">Activities for your mood:</label>
-      <select id="activities"></select>
-    </div>
-    <div class="search-bar">
-      <input id="spotifyQuery" type="text" placeholder="Search song on Spotify..." />
-      <button onclick="searchSpotify()">🔍</button>
-    </div>
-    <h4 style="margin-top:10px">Playlist</h4>
-    <div class="music-list" id="musicList"></div>
-    <h4>Player</h4>
-    <div style="display:flex;gap:6px;align-items:center">
-      <button onclick="prevTrack()">⏮️</button>
-      <button onclick="playMusic()">▶️</button>
-      <button onclick="pauseMusic()">⏸️</button>
-      <button onclick="nextTrack()">⏭️</button>
-      <input id="vol" type="range" min="0" max="1" step="0.05" value="0.6" onchange="setVolume(this.value)" />
-    </div>
-    <h4 style="margin-top:10px">Quick Tips</h4>
-    <ul id="quickTips"></ul>
-  </aside>
+<aside class="panel">
+<h2>Pick a Mood to Start</h2>
+<div class="moods">
+  <button class="mood-btn" data-mood="happy">😄</button>
+  <button class="mood-btn" data-mood="neutral">😐</button>
+  <button class="mood-btn" data-mood="sad">😢</button>
+  <button class="mood-btn" data-mood="angry">😡</button>
+</div>
 
-  <section style="display:flex;flex-direction:column;gap:10px">
-    <div class="panel" id="musicSection">
-      <h3>Playlist & Covers</h3>
-      <p id="playlistDesc">Choose a mood to load tracks.</p>
-    </div>
-    <div class="panel" id="gamesSection">
-      <h3>Tic-Tac-Toe</h3>
-      <div class="ttt-grid" id="ttt"></div>
-      <p id="tttStatus"></p>
-      <button onclick="resetTicTac()">Reset</button>
-      <h3 style="margin-top:10px">Memory Match</h3>
-      <div class="mem-grid" id="memGrid"></div>
-      <p id="memStatus"></p>
-      <button onclick="resetMemory()">Reset</button>
-    </div>
-    <div class="panel" id="tipsSection">
-      <h3>Mood Improvement Tips</h3>
-      <ul id="tipsList"></ul>
-    </div>
-  </section>
-  <div class="loader" id="loader"></div>
+<div class="dropdown-activities">
+<label for="activities">Activities:</label>
+<select id="activities"></select>
+</div>
+
+<h2 style="margin-top:20px;">Quotes</h2>
+<ul id="quotesList"></ul>
+
+<h2 style="margin-top:20px;">Yoga Asanas</h2>
+<ul class="yoga-list" id="yogaList"></ul>
+
+<h2 class="tips-large">Mood Improvement Tips</h2>
+<ul id="tipsList"></ul>
+</aside>
+
+<section class="panel" style="flex:2;">
+<h2>Search a Song on Spotify</h2>
+<div class="search-bar">
+<input id="spotifyQuery" type="text" placeholder="Search song on Spotify..."/>
+<button id="searchBtn" class="dynamic-btn" onclick="searchSpotify()">🔍</button>
+</div>
+
+<div class="games-section">
+<h2>Tic-Tac-Toe</h2>
+<div class="ttt-grid" id="ttt"></div>
+<p class="win-title" id="tttWin"></p>
+<button id="tttResetBtn" class="dynamic-btn" onclick="resetTicTac()">Reset Tic-Tac-Toe</button>
+
+<h2 style="margin-top:20px;">Memory Match</h2>
+<div class="mem-grid" id="memGrid"></div>
+<p class="win-title" id="memWin"></p>
+<button id="memResetBtn" class="dynamic-btn" onclick="resetMemory()">Reset Memory Match</button>
+</div>
+</section>
 </main>
 
 <footer>&copy; 2025 MoodPlay</footer>
-<audio id="player" hidden></audio>
 
 <script>
 const moods={
- happy:{bg:['#fff6e6','#ffe1a8'],activities:['Dance','Chat with a friend','Go for a walk'],tips:['Smile at yourself','Note 3 good things'],tracks:[{title:'Song A',url:'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3',cover:'https://via.placeholder.com/36/FFD27A'}]},
- neutral:{bg:['#e8f0ff','#cfd9ff'],activities:['Read a book','Meditate 5min','Stretch'],tips:['Take deep breaths','Drink water'],tracks:[{title:'Song B',url:'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3',cover:'https://via.placeholder.com/36/9fc1ff'}]},
- sad:{bg:['#dbe9ff','#bcd4ff'],activities:['Listen to calm music','Journal thoughts','Watch a comedy'],tips:['Grounding exercise','Warm tea'],tracks:[{title:'Song C',url:'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3',cover:'https://via.placeholder.com/36/9fc7ff'}]},
- angry:{bg:['#ffe6ea','#ffb3be'],activities:['Exercise','Punch pillow','Take cold water'],tips:['Count backwards','Slow walk'],tracks:[{title:'Song D',url:'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3',cover:'https://via.placeholder.com/36/ff9aa3'}]}
+ happy:{bg:['#fff700','#ffd700'],activities:['Dance','Chat with a friend','Go for a walk'],tips:['Smile at yourself','Note 3 good things'],quotes:['Happiness is contagious!','Enjoy the little things.','Stay positive!'],yoga:['Mountain Pose 🧘‍♂️','Downward Dog 🧘‍♀️','Tree Pose 🧘‍♂️','Sun Salutation 🧘‍♀️'],color:'#ffcc00'},
+ neutral:{bg:['#bdc3c7','#2c3e50'],activities:['Read a book','Meditate 5min','Stretch'],tips:['Take deep breaths','Drink water'],quotes:['Balance is key.','Stay calm.','Keep moving forward.'],yoga:['Cat-Cow 🧘‍♀️','Seated Forward Bend 🧘‍♂️','Child Pose 🧘‍♀️','Bridge Pose 🧘‍♂️'],color:'#8888ff'},
+ sad:{bg:['#283c86','#45a247'],activities:['Listen to calm music','Journal thoughts','Watch a comedy'],tips:['Grounding exercise','Warm tea'],quotes:['This too shall pass.','Every day is a new beginning.','Keep your head up.'],yoga:['Child Pose 🧘‍♂️','Legs Up Wall 🧘‍♀️','Cobra Pose 🧘‍♂️','Happy Baby Pose 🧘‍♀️'],color:'#5599ff'},
+ angry:{bg:['#cb2d3e','#ef473a'],activities:['Exercise','Punch pillow','Take cold water'],tips:['Count backwards','Slow walk'],quotes:['Take a deep breath.','Release tension.','Focus on positivity.'],yoga:['Warrior Pose 🧘‍♀️','Chair Pose 🧘‍♂️','Triangle Pose 🧘‍♀️','Crescent Lunge 🧘‍♂️'],color:'#ff4444'}
 };
-let state={mood:'neutral',playlist:[],current:0};
-const player=document.getElementById('player');
+
+let state={mood:null};
+
+// Set Mood
 function setMood(mood){
- state.mood=mood;document.querySelectorAll('.mood-btn').forEach(b=>b.classList.toggle('active',b.dataset.mood===mood));
- const m=moods[mood];document.body.style.background=`linear-gradient(135deg,${m.bg[0]},${m.bg[1]})`;
- state.playlist=m.tracks;state.current=0;renderPlaylist();loadTrack(0);
- document.getElementById('quickTips').innerHTML=m.tips.map(t=>`<li>${t}</li>`).join('');
+ state.mood=mood;
+ document.querySelectorAll('.mood-btn').forEach(b=>b.classList.toggle('active',b.dataset.mood===mood));
+ const m=moods[mood];
+ document.body.style.background=`linear-gradient(135deg,${m.bg[0]},${m.bg[1]})`;
+ const act=document.getElementById('activities'); act.style.display='block';
+ act.innerHTML=m.activities.map(a=>`<option>${a}</option>`).join('');
  document.getElementById('tipsList').innerHTML=m.tips.map(t=>`<li>${t}</li>`).join('');
- const act=document.getElementById('activities');act.innerHTML=m.activities.map(a=>`<option>${a}</option>`).join('');
+ document.getElementById('quotesList').innerHTML=m.quotes.map(q=>`<li>${q}</li>`).join('');
+ document.getElementById('yogaList').innerHTML=m.yoga.map(y=>`<li>${y}</li>`).join('');
+ document.getElementById('searchBtn').style.background=m.color;
+ document.getElementById('tttResetBtn').style.background=m.color;
+ document.getElementById('memResetBtn').style.background=m.color;
+ document.querySelector('.games-section').style.display='block';
+ initTicTac(); initMemory();
 }
-function renderPlaylist(){const ml=document.getElementById('musicList');ml.innerHTML='';state.playlist.forEach((t,i)=>{ml.innerHTML+=`<div class='track ${i===state.current?'active':''}' onclick='selectTrack(${i})'><img class='cover' src='${t.cover}'/><div>${t.title}</div></div>`});}
-function loadTrack(i){if(!state.playlist[i])return;player.src=state.playlist[i].url;updateActiveUI();}
-function playMusic(){player.play();}function pauseMusic(){player.pause();}
-function setVolume(v){player.volume=v;}function nextTrack(){state.current=(state.current+1)%state.playlist.length;loadTrack(state.current);player.play();}
-function prevTrack(){state.current=(state.current-1+state.playlist.length)%state.playlist.length;loadTrack(state.current);player.play();}
-function selectTrack(i){state.current=i;loadTrack(i);player.play();}
-function updateActiveUI(){[...document.getElementById('musicList').children].forEach((el,idx)=>el.classList.toggle('active',idx===state.current));}
+
 // Spotify search
-function searchSpotify(){const q=document.getElementById('spotifyQuery').value;if(!q)return;window.open(`https://open.spotify.com/search/${encodeURIComponent(q)}`,'_blank');}
-// TicTacToe
-let tttBoard=[],tttTurn='X';function initTicTac(){const t=document.getElementById('ttt');t.innerHTML='';tttBoard=Array(9).fill('');tttTurn='X';for(let i=0;i<9;i++){const c=document.createElement('div');c.className='cell';c.onclick=()=>playTTT(i);t.appendChild(c);}document.getElementById('tttStatus').textContent='Turn: X';}
-function playTTT(i){if(tttBoard[i])return;tttBoard[i]=tttTurn;renderTTT();if(checkWin(tttTurn)){document.getElementById('tttStatus').textContent=tttTurn+' wins!';return;}if(tttBoard.every(Boolean)){document.getElementById('tttStatus').textContent='Draw';return;}tttTurn=tttTurn==='X'?'O':'X';document.getElementById('tttStatus').textContent='Turn: '+tttTurn;}
-function renderTTT(){tttBoard.forEach((v,i)=>{document.getElementById('ttt').children[i].textContent=v;});}
+function searchSpotify(){
+ const q=document.getElementById('spotifyQuery').value;
+ if(!q)return;
+ window.open(`https://open.spotify.com/search/${encodeURIComponent(q)}`,'_blank');
+}
+
+// Tic-Tac-Toe AI
+let tttBoard=[], playerTurn='O', playerMoved=false;
+function initTicTac(){
+ tttBoard=Array(9).fill('');
+ const t=document.getElementById('ttt'); t.innerHTML='';
+ for(let i=0;i<9;i++){
+   const c=document.createElement('div'); c.className='cell'; c.onclick=()=>playTTT(i); t.appendChild(c);
+ }
+ document.getElementById('tttWin').style.display='none';
+ playerTurn='O'; playerMoved=false;
+}
+
+function playTTT(i){
+ if(tttBoard[i] || playerTurn!=='O') return;
+ tttBoard[i]='O'; renderTTT();
+ if(checkWin('O')){showWin('tttWin','🎉 You Won!'); return;}
+ if(tttBoard.every(Boolean)){showWin('tttWin','Draw!'); return;}
+ playerTurn='X';
+ setTimeout(computerMove,300);
+}
+
+function computerMove(){
+ const empty = tttBoard.map((v,i)=>v===''?i:null).filter(v=>v!==null);
+ if(!empty.length) return;
+ // AI logic: win/block/random
+ for(let i of empty){ tttBoard[i]='X'; if(checkWin('X')){renderTTT();showWin('tttWin','Computer Wins!'); playerTurn='O'; return;} tttBoard[i]=''; }
+ for(let i of empty){ tttBoard[i]='O'; if(checkWin('O')){tttBoard[i]='X'; renderTTT(); playerTurn='O'; return;} tttBoard[i]=''; }
+ if(tttBoard[4]===''){ tttBoard[4]='X'; renderTTT(); playerTurn='O'; return; }
+ tttBoard[empty[Math.floor(Math.random()*empty.length)]]='X';
+ renderTTT(); playerTurn='O';
+}
+
+function renderTTT(){tttBoard.forEach((v,i)=>document.getElementById('ttt').children[i].textContent=v);}
 function checkWin(p){const wins=[[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];return wins.some(line=>line.every(i=>tttBoard[i]===p));}
+function showWin(id,text){const el=document.getElementById(id);el.textContent=text;el.style.display='block';}
 function resetTicTac(){initTicTac();}
-// Memory
-let memCards=[],memFirst=null,memPairs=0,memLock=false;function initMemory(){const grid=document.getElementById('memGrid');grid.innerHTML='';const symbols=['🍎','🍌','🍇','🍓'];const deck=symbols.concat(symbols).sort(()=>Math.random()-0.5);memCards=deck;memFirst=null;memPairs=0;deck.forEach((s,i)=>{const d=document.createElement('div');d.className='card-mem';d.onclick=()=>flipCard(i);grid.appendChild(d);});document.getElementById('memStatus').textContent='Matches: 0';}
-function flipCard(i){if(memLock)return;const el=document.getElementById('memGrid').children[i];if(el.textContent)return;el.textContent=memCards[i];if(memFirst===null){memFirst=i;}else{if(memCards[memFirst]===memCards[i]){memPairs++;document.getElementById('memStatus').textContent='Matches: '+memPairs;memFirst=null;if(memPairs===memCards.length/2)alert('All matched!');}else{memLock=true;setTimeout(()=>{document.getElementById('memGrid').children[memFirst].textContent='';el.textContent='';memFirst=null;memLock=false;},600);}}}
+
+// Memory Match
+let memCards=[], memFirst=null, memPairs=0, memLock=false;
+function initMemory(){
+ const grid=document.getElementById('memGrid'); grid.innerHTML='';
+ const symbols=['🍎','🍌','🍇','🍓']; const deck=symbols.concat(symbols).sort(()=>Math.random()-0.5);
+ memCards=deck; memFirst=null; memPairs=0; memLock=false;
+ deck.forEach((s,i)=>{const d=document.createElement('div'); d.className='card-mem'; d.onclick=()=>flipCard(i); grid.appendChild(d);});
+ document.getElementById('memWin').style.display='none';
+}
+function flipCard(i){
+ if(memLock) return;
+ const el=document.getElementById('memGrid').children[i];
+ if(el.textContent) return;
+ el.textContent=memCards[i];
+ if(memFirst===null){memFirst=i;} else{
+   if(memCards[memFirst]===memCards[i]){memPairs++; memFirst=null; if(memPairs===memCards.length/2) showWin('memWin','🎉 You Won Memory Match!');}
+   else{memLock=true; setTimeout(()=>{document.getElementById('memGrid').children[memFirst].textContent=''; el.textContent=''; memFirst=null; memLock=false;},600);}
+ }
+}
 function resetMemory(){initMemory();}
-function navigate(name){document.getElementById('musicSection').style.display=(name==='music'||name==='home')?'block':'none';document.getElementById('gamesSection').style.display=(name==='games'||name==='home')?'block':'none';document.getElementById('tipsSection').style.display=(name==='tips'||name==='home')?'block':'none';}
-document.querySelectorAll('.mood-btn').forEach(b=>{b.addEventListener('click',()=>setMood(b.dataset.mood));});setMood('neutral');initTicTac();initMemory();
+
+// Mood selection
+document.querySelectorAll('.mood-btn').forEach(b=>b.addEventListener('click',()=>setMood(b.dataset.mood)));
 </script>
 </body>
 </html>
